@@ -167,7 +167,7 @@ export class ObsidianMCPServerSettingTab extends PluginSettingTab {
 		const mcpUrl = `http://localhost:${this.plugin.settings.port}/mcp`;
 
 		// Claude Code CLI 命令
-		const cliCommand = `claude mcp add --transport sse -s user obsidian-native ${mcpUrl}`;
+		const cliCommand = `claude mcp add --transport http -s user obsidian-native ${mcpUrl}`;
 		new Setting(containerEl)
 			.setName("Claude Code CLI")
 			.setDesc("一键添加（推荐）")
@@ -188,7 +188,7 @@ export class ObsidianMCPServerSettingTab extends PluginSettingTab {
 		const jsonConfig = JSON.stringify({
 			"mcpServers": {
 				"obsidian-native": {
-					"type": "sse",
+					"type": "http",
 					"url": mcpUrl
 				}
 			}
