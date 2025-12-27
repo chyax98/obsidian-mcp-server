@@ -31,7 +31,15 @@ const context = await esbuild.context({
 		"@lezer/common",
 		"@lezer/highlight",
 		"@lezer/lr",
+		// fastmcp 可选依赖
+		"sury",
+		"effect",
+		"@valibot/to-json-schema",
 		...builtins],
+	// Polyfill import.meta.url for ESM modules in CJS environment
+	define: {
+		"import.meta.url": JSON.stringify("file:///"),
+	},
 	format: "cjs",
 	target: "es2018",
 	logLevel: "info",
