@@ -1,16 +1,16 @@
 {
-	"name": "mcp-server",
-	"version": "1.1.0",
-	"description": "MCP server plugin for Obsidian (https://obsidian.md)",
+	"name": "obsidian-mcp-native",
+	"version": "2.0.0",
+	"description": "轻量级 Obsidian MCP 服务器插件，提供原生 API 访问能力",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
 		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
 		"version": "node version-bump.mjs && git add manifest.json versions.json"
 	},
-	"keywords": [],
-	"author": "Minhao Zhang",
-	"license": "GNU Affero General Public License v3.0",
+	"keywords": ["obsidian", "mcp", "model-context-protocol"],
+	"author": "chyax",
+	"license": "MIT",
 	"devDependencies": {
 		"@types/node": "^22.13.14",
 		"@typescript-eslint/eslint-plugin": "8.28.0",
@@ -22,12 +22,7 @@
 		"typescript": "5.8.2"
 	},
 	"dependencies": {
-		"@langchain/community": "^0.3.38",
-		"@orama/orama": "^3.1.4",
-		"@orama/plugin-data-persistence": "^3.1.4",
 		"fastmcp": "^1.20.5",
-		"langchain": "^0.3.19",
-		"openai": "^4.90.0",
 		"zod": "^3.24.2"
 	}
 }

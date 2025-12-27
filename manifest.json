@@ -1,10 +1,10 @@
 {
-	"id": "mcp-server",
-	"name": "MCP Server",
-	"version": "1.1.0",
+	"id": "obsidian-mcp-native",
+	"name": "Obsidian MCP 原生接口",
+	"version": "2.0.0",
 	"minAppVersion": "1.8.9",
-	"description": "MCP SSE Server Backend",
-	"author": "Minhao Zhang",
-	"authorUrl": "https://github.com/Minhao-Zhang",
+	"description": "轻量级 MCP 服务器，提供 Obsidian 原生 API 访问能力",
+	"author": "chyax",
+	"authorUrl": "https://github.com/chyax98",
 	"isDesktopOnly": true
 }
