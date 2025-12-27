@@ -166,8 +166,26 @@ export class ObsidianMCPServerSettingTab extends PluginSettingTab {
 
 		const mcpUrl = `http://localhost:${this.plugin.settings.port}/mcp`;
 
-		// Claude Code 配置 (settings.json)
-		const claudeCodeConfig = JSON.stringify({
+		// Claude Code CLI 命令
+		const cliCommand = `claude mcp add --transport sse -s user obsidian-native ${mcpUrl}`;
+		new Setting(containerEl)
+			.setName("Claude Code CLI")
+			.setDesc("一键添加（推荐）")
+			.addButton((button) => {
+				button
+					.setButtonText("复制")
+					.onClick(() => {
+						navigator.clipboard.writeText(cliCommand);
+						new Notice("CLI 命令已复制");
+					});
+			});
+
+		// 添加 CLI 代码块
+		const cliCodeEl = containerEl.createEl("pre", { cls: "mcp-config-code" });
+		cliCodeEl.createEl("code", { text: cliCommand });
+
+		// MCP JSON 配置
+		const jsonConfig = JSON.stringify({
 			"mcpServers": {
 				"obsidian-native": {
 					"type": "sse",
@@ -176,44 +194,20 @@ export class ObsidianMCPServerSettingTab extends PluginSettingTab {
 			}
 		}, null, 2);
 		new Setting(containerEl)
-			.setName("Claude Code")
-			.setDesc("添加到 ~/.claude/settings.json")
+			.setName("MCP JSON 配置")
+			.setDesc("添加到 settings.json 或 claude_desktop_config.json")
 			.addButton((button) => {
 				button
 					.setButtonText("复制")
 					.onClick(() => {
-						navigator.clipboard.writeText(claudeCodeConfig);
-						new Notice("Claude Code 配置已复制");
+						navigator.clipboard.writeText(jsonConfig);
+						new Notice("JSON 配置已复制");
 					});
 			});
 
-		// 添加 Claude Code 代码块
-		const claudeCodeEl = containerEl.createEl("pre", { cls: "mcp-config-code" });
-		claudeCodeEl.createEl("code", { text: claudeCodeConfig });
-
-		// 其他 MCP 客户端配置 (如 Claude Desktop)
-		const otherConfig = JSON.stringify({
-			"mcpServers": {
-				"obsidian-native": {
-					"url": mcpUrl
-				}
-			}
-		}, null, 2);
-		new Setting(containerEl)
-			.setName("其他 MCP 客户端")
-			.setDesc("添加到 claude_desktop_config.json 等")
-			.addButton((button) => {
-				button
-					.setButtonText("复制")
-					.onClick(() => {
-						navigator.clipboard.writeText(otherConfig);
-						new Notice("配置已复制");
-					});
-			});
-
-		// 添加其他客户端代码块
-		const otherCodeEl = containerEl.createEl("pre", { cls: "mcp-config-code" });
-		otherCodeEl.createEl("code", { text: otherConfig });
+		// 添加 JSON 代码块
+		const jsonCodeEl = containerEl.createEl("pre", { cls: "mcp-config-code" });
+		jsonCodeEl.createEl("code", { text: jsonConfig });
 
 		new Setting(containerEl)
 			.addButton((button) => {
