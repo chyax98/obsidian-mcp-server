@@ -72,10 +72,20 @@ export const DEFAULT_SETTINGS: ObsidianMCPServerPluginSettings = {
 
 export class ObsidianMCPServerSettingTab extends PluginSettingTab {
 	plugin: ObsidianMCPServer;
+	private refreshTimeout: ReturnType<typeof setTimeout> | null = null;
 
 	constructor(app: App, plugin: ObsidianMCPServer) {
 		super(app, plugin);
 		this.plugin = plugin;
+	}
+
+	private debouncedRefresh() {
+		if (this.refreshTimeout) {
+			clearTimeout(this.refreshTimeout);
+		}
+		this.refreshTimeout = setTimeout(() => {
+			this.display();
+		}, 500);
 	}
 
 	display(): void {
@@ -100,6 +110,8 @@ export class ObsidianMCPServerSettingTab extends PluginSettingTab {
 						if (!isNaN(port) && port > 0 && port < 65536) {
 							this.plugin.settings.port = port;
 							await this.plugin.saveSettings();
+							// 防抖刷新以更新配置示例中的端口
+							this.debouncedRefresh();
 						} else {
 							new Notice(
 								this.plugin.t("settings.notices.invalidPort")
