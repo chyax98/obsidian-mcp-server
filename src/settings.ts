@@ -110,14 +110,19 @@ export class ObsidianMCPServerSettingTab extends PluginSettingTab {
 			)
 			.addButton((button) => {
 				button
-					.setButtonText("保存端口")
+					.setButtonText("保存并重启")
 					.setCta()
 					.onClick(async () => {
 						if (this.pendingPort && this.pendingPort !== this.plugin.settings.port) {
 							this.plugin.settings.port = this.pendingPort;
 							await this.plugin.saveSettings();
-							new Notice(`端口已保存: ${this.pendingPort}`);
-							this.display(); // 刷新页面更新配置示例
+							try {
+								await this.plugin.restartMCPServer();
+								new Notice(`端口已切换到 ${this.pendingPort}，服务已重启`);
+							} catch (error: any) {
+								new Notice(`端口已保存，但重启失败: ${error?.message || error}`);
+							}
+							this.display();
 						} else if (!this.pendingPort) {
 							new Notice(this.plugin.t("settings.notices.invalidPort"));
 						} else {
