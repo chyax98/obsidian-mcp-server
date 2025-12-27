@@ -55,7 +55,15 @@
 2. 连接端点：`http://localhost:27123/mcp`（端口可配置）
 3. 在 AI 客户端中配置 MCP Streamable HTTP 连接
 
-### Claude Desktop 配置示例
+### 配置 MCP 客户端
+
+**Claude Code（命令行）：**
+
+```bash
+claude mcp add obsidian-native --transport http --url http://localhost:27123/mcp
+```
+
+**项目 `.mcp.json` 文件：**
 
 ```json
 {
