@@ -209,29 +209,6 @@ export class ObsidianMCPServerSettingTab extends PluginSettingTab {
 		const jsonCodeEl = containerEl.createEl("pre", { cls: "mcp-config-code" });
 		jsonCodeEl.createEl("code", { text: jsonConfig });
 
-		new Setting(containerEl)
-			.addButton((button) => {
-				button
-					.setButtonText(
-						this.plugin.t("settings.buttons.restartMCPServer")
-					)
-					.onClick(async () => {
-						try {
-							await this.plugin.restartMCPServer();
-							new Notice(
-								this.plugin.t("settings.notices.restartSuccess")
-							);
-						} catch (error: any) {
-							console.error("MCP Server restart error:", error);
-							new Notice(
-								this.plugin.t("settings.notices.restartError", {
-									error: error?.message || String(error),
-								})
-							);
-						}
-					});
-			});
-
 		// ============ 文件操作工具 ============
 		new Setting(containerEl)
 			.setName(this.plugin.t("settings.tools.fileOps.heading"))
@@ -289,7 +266,24 @@ export class ObsidianMCPServerSettingTab extends PluginSettingTab {
 
 		// ============ 重启提示 ============
 		new Setting(containerEl)
-			.setDesc(this.plugin.t("settings.buttons.restartHint"));
+			.setDesc(this.plugin.t("settings.buttons.restartHint"))
+			.addButton((button) => {
+				button
+					.setButtonText(this.plugin.t("settings.buttons.restartMCPServer"))
+					.onClick(async () => {
+						try {
+							await this.plugin.restartMCPServer();
+							new Notice(this.plugin.t("settings.notices.restartSuccess"));
+						} catch (error: any) {
+							console.error("MCP Server restart error:", error);
+							new Notice(
+								this.plugin.t("settings.notices.restartError", {
+									error: error?.message || String(error),
+								})
+							);
+						}
+					});
+			});
 	}
 
 	private addToolToggle(
