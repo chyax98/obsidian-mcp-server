@@ -39,7 +39,7 @@
 1. 克隆仓库到 Obsidian 插件目录：
    ```bash
    cd /path/to/vault/.obsidian/plugins/
-   git clone <repo-url> obsidian-mcp-native
+   git clone https://github.com/chyax98/obsidian-mcp-server.git obsidian-mcp-native
    ```
 
 2. 安装依赖并构建：
@@ -54,8 +54,8 @@
 ## 使用
 
 1. 启动 MCP 服务器（命令面板 → "Start Server" 或开启自动启动）
-2. 连接端点：`http://localhost:8080/sse`（端口可配置）
-3. 在 AI 客户端中配置 MCP SSE 连接
+2. 连接端点：`http://localhost:27123/mcp`（端口可配置）
+3. 在 AI 客户端中配置 MCP Streamable HTTP 连接
 
 ### Claude Desktop 配置示例
 
@@ -63,7 +63,8 @@
 {
   "mcpServers": {
     "obsidian-native": {
-      "url": "http://localhost:8080/sse"
+      "type": "streamable-http",
+      "url": "http://localhost:27123/mcp"
     }
   }
 }
@@ -80,7 +81,7 @@
                │                       │
     ┌──────────▼──────────┐ ┌─────────▼───────────┐
     │ 本插件 (轻量)        │ │ 外部 MCP (重型)      │
-    │ Port: 8080          │ │ 独立进程             │
+    │ Port: 27123         │ │ 独立进程             │
     ├─────────────────────┤ ├─────────────────────┤
     │ • get_active_file   │ │ • semantic_search   │
     │ • get_selection     │ │ • hybrid_search     │

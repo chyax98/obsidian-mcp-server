@@ -48,9 +48,8 @@ export class MCPServer {
 			});
 
 			this.server.start({
-				transportType: "sse",
-				sse: {
-					endpoint: "/sse",
+				transportType: "httpStream",
+				httpStream: {
 					port: this.port,
 				},
 			});

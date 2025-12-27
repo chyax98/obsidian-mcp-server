@@ -30,7 +30,7 @@ export interface ObsidianMCPServerPluginSettings {
 }
 
 export const DEFAULT_SETTINGS: ObsidianMCPServerPluginSettings = {
-	port: 8080,
+	port: 27123,
 	startOnStartup: false,
 	tools: {
 		// 文件操作
@@ -75,7 +75,7 @@ export class ObsidianMCPServerSettingTab extends PluginSettingTab {
 			.setDesc(this.plugin.t("settings.port.desc"))
 			.addText((text) =>
 				text
-					.setPlaceholder("8080")
+					.setPlaceholder("27123")
 					.setValue(this.plugin.settings.port.toString())
 					.onChange(async (value) => {
 						const port = parseInt(value);
@@ -104,13 +104,13 @@ export class ObsidianMCPServerSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName(this.plugin.t("settings.mcpEndpoint.name"))
-			.setDesc(`http://localhost:${this.plugin.settings.port}/sse`)
+			.setDesc(`http://localhost:${this.plugin.settings.port}/mcp`)
 			.addButton((button) => {
 				button
 					.setButtonText(this.plugin.t("settings.buttons.copy"))
 					.onClick(() => {
 						navigator.clipboard.writeText(
-							`http://localhost:${this.plugin.settings.port}/sse`
+							`http://localhost:${this.plugin.settings.port}/mcp`
 						);
 						new Notice(
 							this.plugin.t("settings.notices.endpointCopied")
