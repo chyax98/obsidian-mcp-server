@@ -1,25 +1,17 @@
-*.msp
-orama.json
-
-# vscode
-.vscode 
-
-# Intellij
+# IDE
+.vscode
 *.iml
 .idea
 
 # npm
 node_modules
 
-# Don't include the compiled main.js file in the repo.
-# They should be uploaded to GitHub releases instead.
+# 构建产物（通过 GitHub Releases 发布）
 main.js
-
-# Exclude sourcemaps
 *.map
 
-# obsidian
+# Obsidian
 data.json
 
-# Exclude macOS Finder (System Explorer) View States
+# 系统文件
 .DS_Store

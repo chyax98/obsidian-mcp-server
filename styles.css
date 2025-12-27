@@ -1,41 +1,5 @@
-/* Styles moved from src/settings.ts */
+/* Obsidian MCP Native 插件样式 */
 
-.mcp-full-width-container {
-  width: 100%;
-  margin-bottom: 1em;
-}
-
-.mcp-full-width-container textarea {
-  min-height: 200px;
-  width: 100%;
-}
-
-.mcp-button-row {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 0.5em;
-}
-
-.dangerous-zone .setting-item-info {
-  color: var(--text-error); /* Use Obsidian's error text color */
-}
-
-.dangerous-zone .setting-item-control button {
-  background-color: var(--background-modifier-error); /* Use Obsidian's error background color */
-  color: var(--text-on-error);
-  border-color: var(--background-modifier-error-hover);
-}
-
-.dangerous-zone .setting-item-control button:hover {
-  background-color: var(--background-modifier-error-hover);
-}
-
-/* Default state for the collapsible section */
-.mcp-tools-section {
-  display: none; /* Hidden by default */
-}
-
-/* State when the section is expanded */
-.mcp-tools-section.is-expanded {
-  display: block; /* Show when expanded */
+.mcp-server-ribbon-class {
+  /* 状态图标样式 */
 }
