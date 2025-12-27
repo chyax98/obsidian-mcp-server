@@ -18,14 +18,23 @@ export interface ObsidianMCPServerPluginSettings {
 		delete_file: boolean;
 		create_folder: boolean;
 		delete_folder: boolean;
-		// Obsidian 原生 API
+		// Obsidian 原生 API - 基础
 		get_active_file: boolean;
-		get_active_file_path: boolean;
 		open_file: boolean;
 		get_selection: boolean;
 		insert_text: boolean;
 		get_vault_info: boolean;
 		search_vault: boolean;
+		// Obsidian 原生 API - MetadataCache
+		get_file_metadata: boolean;
+		get_links: boolean;
+		// Obsidian 原生 API - Workspace
+		get_open_files: boolean;
+		// Obsidian 原生 API - Commands
+		list_commands: boolean;
+		execute_command: boolean;
+		// Obsidian 原生 API - FileManager
+		rename_file: boolean;
 	};
 }
 
@@ -41,14 +50,23 @@ export const DEFAULT_SETTINGS: ObsidianMCPServerPluginSettings = {
 		delete_file: true,
 		create_folder: true,
 		delete_folder: true,
-		// Obsidian 原生 API
+		// Obsidian 原生 API - 基础
 		get_active_file: true,
-		get_active_file_path: true,
 		open_file: true,
 		get_selection: true,
 		insert_text: true,
 		get_vault_info: true,
 		search_vault: true,
+		// Obsidian 原生 API - MetadataCache
+		get_file_metadata: true,
+		get_links: true,
+		// Obsidian 原生 API - Workspace
+		get_open_files: true,
+		// Obsidian 原生 API - Commands
+		list_commands: true,
+		execute_command: false, // 默认关闭，因为可能有破坏性
+		// Obsidian 原生 API - FileManager
+		rename_file: true,
 	},
 };
 
@@ -154,18 +172,47 @@ export class ObsidianMCPServerSettingTab extends PluginSettingTab {
 		this.addToolToggle(containerEl, "create_folder", "创建文件夹");
 		this.addToolToggle(containerEl, "delete_folder", "删除文件夹");
 
-		// ============ Obsidian 原生 API 工具 ============
+		// ============ Obsidian 原生 API 工具 - 基础 ============
 		new Setting(containerEl)
 			.setName(this.plugin.t("settings.tools.nativeApi.heading"))
 			.setHeading();
 
-		this.addToolToggle(containerEl, "get_active_file", "获取当前活动文件（含内容）");
-		this.addToolToggle(containerEl, "get_active_file_path", "获取当前文件路径（轻量）");
+		this.addToolToggle(containerEl, "get_active_file", "获取当前活动文件（可选是否包含内容）");
 		this.addToolToggle(containerEl, "open_file", "在编辑器中打开文件");
 		this.addToolToggle(containerEl, "get_selection", "获取选中的文本");
 		this.addToolToggle(containerEl, "insert_text", "在光标处插入文本");
 		this.addToolToggle(containerEl, "get_vault_info", "获取 Vault 信息");
 		this.addToolToggle(containerEl, "search_vault", "按文件名搜索");
+
+		// ============ MetadataCache 工具 ============
+		new Setting(containerEl)
+			.setName("MetadataCache 工具")
+			.setHeading();
+
+		this.addToolToggle(containerEl, "get_file_metadata", "获取文件元数据（frontmatter/tags/headings/links）");
+		this.addToolToggle(containerEl, "get_links", "获取链接（支持 incoming/outgoing/both）");
+
+		// ============ Workspace 工具 ============
+		new Setting(containerEl)
+			.setName("Workspace 工具")
+			.setHeading();
+
+		this.addToolToggle(containerEl, "get_open_files", "获取所有打开的标签页");
+
+		// ============ Command 工具 ============
+		new Setting(containerEl)
+			.setName("Command 工具")
+			.setHeading();
+
+		this.addToolToggle(containerEl, "list_commands", "列出所有可用命令");
+		this.addToolToggle(containerEl, "execute_command", "⚠️ 执行命令（可能有破坏性，默认关闭）");
+
+		// ============ FileManager 工具 ============
+		new Setting(containerEl)
+			.setName("FileManager 工具")
+			.setHeading();
+
+		this.addToolToggle(containerEl, "rename_file", "⚠️ 重命名文件（自动更新所有链接）");
 
 		// ============ 重启提示 ============
 		new Setting(containerEl)
