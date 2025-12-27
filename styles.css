@@ -3,3 +3,26 @@
 .mcp-server-ribbon-class {
   /* 状态图标样式 */
 }
+
+/* 配置代码块样式 */
+.mcp-config-code {
+  background-color: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin: 8px 0 16px 0;
+  overflow-x: auto;
+  font-family: var(--font-monospace);
+  font-size: 13px;
+  line-height: 1.5;
+  user-select: all;
+  cursor: text;
+}
+
+.mcp-config-code code {
+  background: none;
+  padding: 0;
+  color: var(--text-normal);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
