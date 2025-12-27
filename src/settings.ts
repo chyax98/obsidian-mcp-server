@@ -72,20 +72,11 @@ export const DEFAULT_SETTINGS: ObsidianMCPServerPluginSettings = {
 
 export class ObsidianMCPServerSettingTab extends PluginSettingTab {
 	plugin: ObsidianMCPServer;
-	private refreshTimeout: ReturnType<typeof setTimeout> | null = null;
+	private pendingPort: number | null = null;
 
 	constructor(app: App, plugin: ObsidianMCPServer) {
 		super(app, plugin);
 		this.plugin = plugin;
-	}
-
-	private debouncedRefresh() {
-		if (this.refreshTimeout) {
-			clearTimeout(this.refreshTimeout);
-		}
-		this.refreshTimeout = setTimeout(() => {
-			this.display();
-		}, 500);
 	}
 
 	display(): void {
@@ -98,6 +89,9 @@ export class ObsidianMCPServerSettingTab extends PluginSettingTab {
 			.setName(this.plugin.t("settings.server.heading"))
 			.setHeading();
 
+		// 初始化 pendingPort
+		this.pendingPort = this.plugin.settings.port;
+
 		new Setting(containerEl)
 			.setName(this.plugin.t("settings.port.name"))
 			.setDesc(this.plugin.t("settings.port.desc"))
@@ -105,20 +99,32 @@ export class ObsidianMCPServerSettingTab extends PluginSettingTab {
 				text
 					.setPlaceholder("27123")
 					.setValue(this.plugin.settings.port.toString())
-					.onChange(async (value) => {
+					.onChange((value) => {
 						const port = parseInt(value);
 						if (!isNaN(port) && port > 0 && port < 65536) {
-							this.plugin.settings.port = port;
-							await this.plugin.saveSettings();
-							// 防抖刷新以更新配置示例中的端口
-							this.debouncedRefresh();
+							this.pendingPort = port;
 						} else {
-							new Notice(
-								this.plugin.t("settings.notices.invalidPort")
-							);
+							this.pendingPort = null;
 						}
 					})
-			);
+			)
+			.addButton((button) => {
+				button
+					.setButtonText("保存端口")
+					.setCta()
+					.onClick(async () => {
+						if (this.pendingPort && this.pendingPort !== this.plugin.settings.port) {
+							this.plugin.settings.port = this.pendingPort;
+							await this.plugin.saveSettings();
+							new Notice(`端口已保存: ${this.pendingPort}`);
+							this.display(); // 刷新页面更新配置示例
+						} else if (!this.pendingPort) {
+							new Notice(this.plugin.t("settings.notices.invalidPort"));
+						} else {
+							new Notice("端口未变更");
+						}
+					});
+			});
 
 		new Setting(containerEl)
 			.setName(this.plugin.t("settings.autoStart.name"))
